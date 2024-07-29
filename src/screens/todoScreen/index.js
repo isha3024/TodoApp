@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View, Text, StatusBar, TextInput, TouchableOpacity, Keyboard, ScrollView, Alert } from 'react-native'
+import { View, Text, StatusBar, TextInput, TouchableOpacity, Keyboard, ScrollView, Alert, ToastAndroid } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { color, IcCheck, IcClose, IcTrash } from '../../theme'
@@ -20,7 +20,10 @@ export const TodoScreen = () => {
     Alert.alert(
       'Delete Todo', 'Are you sure you want to delete this todo?',
       [
-        { text: 'Ok', onPress: () => dispatch(removeTodo(index)) },
+        { text: 'Ok', onPress: () => {
+          dispatch(removeTodo(index))
+          ToastAndroid.show('Todo removed', ToastAndroid.SHORT);
+        }},
         { text: 'Cancel', onPress: () => null }
       ]
     )
@@ -34,10 +37,11 @@ export const TodoScreen = () => {
       )
     }else {
       if (todo.trim() !== '') {
+        Keyboard.dismiss()
         handleAddToDo(todo);
         setTodo('');
-        Keyboard.dismiss()
       }
+      ToastAndroid.show('Todo added', ToastAndroid.SHORT);
     }
   }
 
@@ -45,7 +49,7 @@ export const TodoScreen = () => {
     <View style={styles.mainView()}>
       <StatusBar backgroundColor={color.primary} translucent={false} />
       <View style={styles.topView()}>
-        <Text style={styles.title()}>TODO APP</Text>
+        <Text style={styles.title()}>TODO</Text>
         <View style={styles.inputView()}>
           <TextInput
             style={styles.input()}

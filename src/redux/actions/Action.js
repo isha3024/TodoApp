@@ -1,7 +1,6 @@
-import { ADD_TODO, MARK_COMPLETE, REMOVE_TODO, TOGGLE_TODO } from "../Types"
+import { ADD_TODO, MARK_COMPLETE, REMOVE_TODO } from "../Types"
 
 export const addTodo = (text) => {
-  console.log('text', text)
   return {
     type: ADD_TODO,
     payload: text
