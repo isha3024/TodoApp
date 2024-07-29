@@ -1,36 +1,44 @@
 import React, { useState } from 'react'
-import { View, Text, StatusBar, TextInput, TouchableOpacity, Keyboard } from 'react-native'
+import { View, Text, StatusBar, TextInput, TouchableOpacity, Keyboard, ScrollView, Alert } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 
-import * as data from '../../json'
 import { color, IcCheck, IcClose, IcTrash } from '../../theme'
-import { addTodo, toggleTodo } from '../../redux'
+import { addTodo, markTodoComplete, removeTodo, toggleTodo } from '../../redux'
 import * as styles from './styles'
-
-const todoList = data.todoList;
 
 export const TodoScreen = () => {
 
   const dispatch = useDispatch();
-  const todos = useSelector(state => state.todo.todoReducer);
-  console.log(todos)
-  const [inputValue, setInputValue] = useState('');
-  
+  const todos = useSelector(state => state.todo.todos);
+  const [todo, setTodo] = useState('');
+
   const handleAddToDo = (text) => {
-    console.log(text);
     dispatch(addTodo(text))
   }
 
-  const handleAddToDoOnClick = () => {
-    if(inputValue.trim() !== '') {
-      handleAddToDo(inputValue);
-      setInputValue('');
-      Keyboard.dismiss()
-    }
+  const deleteTodo = (index) => {
+    Alert.alert(
+      'Delete Todo', 'Are you sure you want to delete this todo?',
+      [
+        { text: 'Ok', onPress: () => dispatch(removeTodo(index)) },
+        { text: 'Cancel', onPress: () => null }
+      ]
+    )
   }
 
-  const clearInputValue = () => {
-    setInputValue('')
+  const handleAddToDoOnClick = () => {
+    if(todo.length === 0 || todo.length === null) {
+      Alert.alert(
+        'Todo', 'Please input your Todo',
+        [{ text: 'Ok', onPress: () => null}]
+      )
+    }else {
+      if (todo.trim() !== '') {
+        handleAddToDo(todo);
+        setTodo('');
+        Keyboard.dismiss()
+      }
+    }
   }
 
   return (
@@ -43,8 +51,8 @@ export const TodoScreen = () => {
             style={styles.input()}
             placeholder="Enter your todo here"
             placeholderTextColor={color.cream}
-            value={inputValue}
-            onChangeText={(text) => setInputValue(text)}
+            value={todo}
+            onChangeText={(text) => setTodo(text)}
           />
           <TouchableOpacity onPress={handleAddToDoOnClick} activeOpacity={0.7} style={styles.closeIcon()}>
             <IcClose color={color.cream} />
@@ -52,23 +60,38 @@ export const TodoScreen = () => {
         </View>
       </View>
       <View style={styles.middleView()}>
-          <Text style={styles.todoListTitle()}>All your Todos....</Text>
-          {
-            todoList.map((todo, index) => {
-              return (
-                <View style={styles.todoItemView()} key={index+1}>
-                  <Text style={styles.todoItemText(todo.completed)}>{index + 1}. {todo.text}</Text>
-                  <TouchableOpacity onPress={() => dispatch(toggleTodo(index))} style={styles.trashIcons()}>
-                    <IcTrash />
-                  </TouchableOpacity>
-                  <TouchableOpacity style={styles.checkIcons()}>
-                    <IcCheck />
-                  </TouchableOpacity>
+        <View style={styles.todoWrapper()}>
+          <Text style={styles.todoListTitle()}>All your todos...</Text>
+          <ScrollView
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.scrollViewContainer()}
+          >
+            {
+              todos.length !== 0
+              ? (
+                todos.map((todo, index) => {
+                  return (
+                    <View style={styles.todoItemView()} key={index}>
+                      <Text style={styles.todoItemText(todo.completed)}>{index + 1}. {todo.text}</Text>
+                      <TouchableOpacity onPress={() => deleteTodo(index)} style={styles.trashIcons()}>
+                        <IcTrash />
+                      </TouchableOpacity>
+                      <TouchableOpacity onPress={() => dispatch(markTodoComplete(index))} style={styles.checkIcons()}>
+                        <IcCheck />
+                      </TouchableOpacity>
+                    </View>
+                  )
+                })
+              )
+              : (
+                <View style={styles.emptyTodoList()}>
+                  <Text style={styles.emptyTodoListText()}>No todos yet!</Text>
                 </View>
               )
-            })
-          }
+            }
+          </ScrollView>
         </View>
+      </View>
     </View>
   )
 }

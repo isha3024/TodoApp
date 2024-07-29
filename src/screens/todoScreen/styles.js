@@ -45,14 +45,22 @@ export const middleView = () => ({
   paddingHorizontal: size.moderateScale(16),
 })
 
+export const todoWrapper = () => ({
+  marginTop: size.moderateScale(20),
+  marginBottom: size.moderateScale(10),
+})
+
 export const todoListTitle = () => ({
   color: color.cream,
   fontSize: fontSize.small,
   fontFamily: fonts.poppinsLight,
   letterSpacing: size.moderateScale(2),
-  marginBottom: size.moderateScale(10),
-  marginTop: size.moderateScale(20)
 })
+
+export const scrollViewContainer = () => ({
+  paddingTop: size.moderateScale(10),
+})
+
 
 export const todoItemView = () => ({
   width: '100%',
@@ -92,4 +100,14 @@ export const checkIcons = () => ({
   marginHorizontal: size.moderateScale(5),
   backgroundColor: color.lightGrey,
   borderRadius: size.moderateScale(20)
+})
+
+export const emptyTodoList = () => ({
+  alignItems: 'center',
+})
+
+export const emptyTodoListText = () => ({
+  fontFamily: fonts.poppinsSemiBold,
+  fontSize: fontSize.large,
+  color: color.creamLight,
 })
