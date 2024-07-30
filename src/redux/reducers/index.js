@@ -1,12 +1,14 @@
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
-// import { thunk } from "redux-thunk";
-import { persistReducer, persistStore } from "redux-persist";
+import { combineReducers, configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { thunk } from "redux-thunk";
+import { persistReducer, persistStore } from "redux-persist";
 
 import { todoReducer } from "./Reducer";
+import { authReducer } from "./AuthReducer";
 
 const rootReducer = combineReducers({
-  todo: todoReducer
+  todo: todoReducer,
+  auth: authReducer
 })
 
 const persistConfig = {
@@ -20,9 +22,7 @@ export const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      thunk: {
-        extraArgument: todoReducer,
-      },
+      thunk: true,
       serializableCheck: false,
     }),
 })

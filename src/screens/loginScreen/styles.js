@@ -15,7 +15,7 @@ export const header = () => ({
 
 export const middleView = () => ({
   flex: 1,
-  paddingVertical: size.moderateScale(80)
+  paddingVertical: size.moderateScale(80),
 })
 
 export const title = () => ({
@@ -29,22 +29,23 @@ export const title = () => ({
 
 export const formDataView = () => ({
   flex: 1,
-  justifyContent: 'space-around'
+  gap: size.moderateScale(40)
 })
 
 export const inputBoxWrapper = () => ({
   
 })
 
-export const inputBox = () => ({
+export const inputBox = (focus) => ({
   marginHorizontal: size.moderateScale(16),
-  marginVertical: size.moderateScale(10),
+  marginBottom: size.moderateScale(30),
   paddingHorizontal: size.moderateScale(5),
   flexDirection: 'row',
   alignItems: 'center',
   gap: size.moderateScale(5),
   borderBottomWidth: size.moderateScale(1),
-  borderBottomColor: color.creamLight
+  borderBottomColor: color.creamLight,
+  borderRadius: size.moderateScale(10),
 })
 
 export const inputStyle = () => ({
@@ -55,15 +56,27 @@ export const inputStyle = () => ({
   letterSpacing: size.moderateScale(2)
 })
 
+export const errorText = () => ({
+  color: color.creamLight,
+  fontSize: fontSize.littleSmall,
+  fontFamily: fonts.poppinsRegular,
+  letterSpacing: size.moderateScale(2),
+  position: 'absolute',
+  bottom: size.moderateScale(-18),
+  left: size.moderateScale(5)
+})
+
 
 export const buttonWrapper = () => ({
-  marginHorizontal: size.moderateScale(16)
+  marginHorizontal: size.moderateScale(16),
+  marginTop: size.moderateScale(85)
 })
 
 export const button = () => ({
   backgroundColor: color.darkGrey,
   width: '100%',
-  height: size.moderateScale(50)
+  height: size.moderateScale(50),
+  borderRadius: size.moderateScale(5)
 })
 
 export const linkWrapper = () => ({
