@@ -14,12 +14,12 @@ export const MainStackNavigation = () => {
 
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-  console.log('isLoggedIn: ', isLoggedIn)
+  console.log('isLoggedIn in mainStackNavigation: ', isLoggedIn)
 
   useEffect(() => {
     dispatch(loadUser())
   }, [dispatch])
-  
+
 
   return (
     <NavigationContainer>
@@ -47,13 +47,6 @@ export const MainStackNavigation = () => {
         {/* <Stack.Screen
           name='authStackNavigation'
           component={AuthStackNavigation}
-          options={{
-            headerShown: false
-          }}
-        />
-        <Stack.Screen
-          name='todoScreen'
-          component={TodoScreen}
           options={{
             headerShown: false
           }}

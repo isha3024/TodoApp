@@ -75,8 +75,8 @@ export const LoginScreen = () => {
   } 
 
   const handleLogin = async () => {
-    const userEmail = inputFields.email;
-    const userPassword = inputFields.password;
+    const userEmail = inputFields?.email;
+    const userPassword = inputFields?.password;
     const user = { userEmail, userPassword};
     
     try {
@@ -149,7 +149,7 @@ export const LoginScreen = () => {
                 errors.password && (<Text style={styles.errorText()}>{errors.password}</Text>)
               }
             </Animated.View>
-            <TouchableOpacity style={styles.linkWrapper()} onPress={() => navigation.navigate('registerScreen')}>
+            <TouchableOpacity style={styles.linkWrapper()} onPress={() => navigation.navigate('todoScreen', {user: inputFields} )}>
               <Text style={styles.linkText()}>Already have an account?</Text>
             </TouchableOpacity>
           </View>

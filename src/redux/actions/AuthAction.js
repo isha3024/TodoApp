@@ -1,11 +1,18 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import { LOGIN_SUCCESS, LOGOUT } from "../Types";
+import { LOGIN_SUCCESS, LOGOUT, REGISTER } from "../Types";
 
 
 export const loginSuccess = (user) => {
-	console.log('user in loginSuccess function: ', user)
 	return {
 		type: LOGIN_SUCCESS,
+		payload: user
+	}
+}
+
+export const registerSuccess = (user) => {
+	console.log('user in registerSuccess function: ', user)
+	return {
+		type: REGISTER,
 		payload: user
 	}
 }
@@ -17,7 +24,6 @@ export const logout = () => ({
 
 //async action creaters
 export const login = (user) => async (dispatch) => {
-	console.log('user in async login function: ', user)
 	try {
 		await AsyncStorage.setItem('user', JSON.stringify(user))
 		dispatch(loginSuccess(user))
@@ -35,6 +41,16 @@ export const loadUser = () => async (dispatch) => {
 		}
 	}
 	catch (error) {
+		console.log(error)
+	}
+}
+
+export const register = (user) => async (dispatch) => {
+	try {
+		await AsyncStorage.setItem('user', JSON.stringify(user));
+		dispatch(registerSuccess(user))
+	}
+	catch(error) {
 		console.log(error)
 	}
 }

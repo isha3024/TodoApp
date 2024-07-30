@@ -36,7 +36,7 @@ export const inputBoxWrapper = () => ({
   
 })
 
-export const inputBox = (focus) => ({
+export const inputBox = () => ({
   marginHorizontal: size.moderateScale(16),
   marginBottom: size.moderateScale(30),
   paddingHorizontal: size.moderateScale(5),
@@ -57,7 +57,7 @@ export const inputStyle = () => ({
 })
 
 export const errorText = () => ({
-  color: color.creamLight,
+  color: color.lightGrey,
   fontSize: fontSize.littleSmall,
   fontFamily: fonts.poppinsRegular,
   letterSpacing: size.moderateScale(2),

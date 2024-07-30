@@ -42,13 +42,24 @@ export const inputBoxWrapper = () => ({
 
 export const inputBox = () => ({
   marginHorizontal: size.moderateScale(16),
-  marginVertical: size.moderateScale(10),
+  marginBottom: size.moderateScale(30),
   paddingHorizontal: size.moderateScale(5),
   flexDirection: 'row',
   alignItems: 'center',
   gap: size.moderateScale(5),
   borderBottomWidth: size.moderateScale(1),
-  borderBottomColor: color.creamLight
+  borderBottomColor: color.creamLight,
+  borderRadius: size.moderateScale(10),
+})
+
+export const errorText = () => ({
+  color: color.lightGrey,
+  fontSize: fontSize.littleSmall,
+  fontFamily: fonts.poppinsRegular,
+  letterSpacing: size.moderateScale(2),
+  position: 'absolute',
+  bottom: size.moderateScale(-18),
+  left: size.moderateScale(5)
 })
 
 export const inputStyle = () => ({

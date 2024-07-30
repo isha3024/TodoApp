@@ -10,6 +10,8 @@ export const TodoScreen = () => {
 
   const dispatch = useDispatch();
   const todos = useSelector(state => state.todo.todos);
+  const userData = useSelector((state) => state.auth.user);
+  console.log('userData: ', userData)
   const [todo, setTodo] = useState('');
 
   const handleAddToDo = (text) => {
