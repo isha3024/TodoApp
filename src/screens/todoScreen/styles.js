@@ -5,9 +5,24 @@ export const mainView = () => ({
   backgroundColor: color.primary,
 })
 
-export const topView = () => ({
+export const topView = (statusbarHeight) => ({
   paddingHorizontal: size.moderateScale(16),
-  marginTop: size.moderateScale(50)
+  marginTop: statusbarHeight
+})
+
+export const userProfileView = () => ({
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'flex-end',
+  gap: size.moderateScale(10),
+  paddingVertical: size.moderateScale(20)
+})
+
+export const userNameText = () => ({
+  color: color.cream,
+  fontSize: fontSize.small,
+  fontFamily: fonts.poppinsMedium,
+  letterSpacing: size.moderateScale(2),
 })
 
 export const title = () => ({

@@ -30,6 +30,13 @@ export const authReducer = (state = initialState, action) => {
 				error: action.payload,
 				userLoggedIn: false
 			}
+		case LOGOUT:
+			return {
+				...state,
+				user: '',
+				loading: false,
+				userLoggedIn: false
+			}
 		default:
 			return state
 	}

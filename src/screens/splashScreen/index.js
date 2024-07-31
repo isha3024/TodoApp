@@ -1,9 +1,9 @@
 import React from 'react'
 import { View, Text, StatusBar } from 'react-native'
 
-import * as styles from './styles'
-import { SplashScreenLoader } from '../../components/splashScreenLoader'
+import { SplashScreenLoader } from '../../components'
 import { color } from '../../theme'
+import * as styles from './styles'
 
 export const SpalshScreen = () => {
   return (

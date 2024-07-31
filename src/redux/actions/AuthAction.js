@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS } from "../Types";
+import { LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS, LOGOUT } from "../Types";
 
 import axios from "axios";
 import { Alert, ToastAndroid } from "react-native";
@@ -38,4 +38,10 @@ export const userLogin = (user) => async (dispatch) => {
 
 		return {type: LOGIN_FAILURE, payload: error}
 	}
+}
+
+export const logoutUser = () => {
+	return { 
+		type: LOGOUT 
+	};
 }
