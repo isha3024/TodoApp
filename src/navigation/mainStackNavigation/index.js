@@ -1,52 +1,73 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 
+import { SpalshScreen } from '../../screens/splashScreen';
 import { AuthStackNavigation } from '../authStackNavigation';
 import { TodoScreen } from '../../screens';
-import { loadUser } from '../../redux/actions/AuthAction';
 
 const Stack = createStackNavigator();
 
 export const MainStackNavigation = () => {
 
-  const dispatch = useDispatch();
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-  console.log('isLoggedIn in mainStackNavigation: ', isLoggedIn)
+  const [showSplashScreen, setShowSplashScreen] = useState(true)
 
   useEffect(() => {
-    dispatch(loadUser())
-  }, [dispatch])
+    setTimeout(() => {
+      setShowSplashScreen(false)
+    }, 2000)
+  }, [])
+
+  const userLoggedIn = useSelector((state) => state.auth.userLoggedIn);;
+  console.log('userLoggedIn:: ', userLoggedIn)
 
 
   return (
     <NavigationContainer>
       <Stack.Navigator>
         {
-          isLoggedIn 
-          ? (
+          showSplashScreen && (
             <Stack.Screen
-          name='todoScreen'
-          component={TodoScreen}
-          options={{
-            headerShown: false
-          }}
-        />
-          ) : (
-            <Stack.Screen
-          name='authStackNavigation'
-          component={AuthStackNavigation}
-          options={{
-            headerShown: false
-          }}
-        />
+              name='splashScreen'
+              component={SpalshScreen}
+              options={{
+                headerShown: false
+              }}
+            />
           )
+        }
+        {
+          userLoggedIn
+            ? (
+              <Stack.Screen
+                name='todoScreen'
+                component={TodoScreen}
+                options={{
+                  headerShown: false
+                }}
+              />
+            ) : (
+              <Stack.Screen
+                name='authStackNavigation'
+                component={AuthStackNavigation}
+                options={{
+                  headerShown: false
+                }}
+              />
+            )
         }
         {/* <Stack.Screen
           name='authStackNavigation'
           component={AuthStackNavigation}
+          options={{
+            headerShown: false
+          }}
+        />
+        <Stack.Screen
+          name='todoScreen'
+          component={TodoScreen}
           options={{
             headerShown: false
           }}

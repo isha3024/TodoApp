@@ -1,33 +1,34 @@
-import { LOGIN_SUCCESS, LOGOUT, REGISTER } from "../Types"
+import { LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS, LOGOUT, REGISTER_FAILURE, REGISTER_REQUEST, REGISTER_SUCCESS } from "../Types"
 
 const initialState = {
-	isLoggedIn: false,
-	user: null,
-	isRegistered: false
+  user: [],
+	loading: false,
+	error: '',
+	userLoggedIn: false
 }
 
 export const authReducer = (state = initialState, action) => {
-	switch (action.type) {
+	switch(action.type) {
+		case LOGIN_REQUEST:
+			return {
+				...state,
+				loading: true,
+				userLoggedIn: false
+			}
 		case LOGIN_SUCCESS:
 			return {
 				...state,
-				isLoggedIn: true,
-				isRegistered: true,
-				user: action.payload
+				user: action.payload,
+				loading: false,
+				userLoggedIn: true
 			}
-		case LOGOUT:
+		case LOGIN_FAILURE:
 			return {
 				...state,
-				isLoggedIn: false,
-				isRegistered: false,
-				user: null
-			}
-		case REGISTER:
-			return {
-				...state,
-				isLoggedIn: true,
-				isRegistered: true,
-				user: action.payload
+				user: '',
+				loading: false,
+				error: action.payload,
+				userLoggedIn: false
 			}
 		default:
 			return state

@@ -1,22 +1,24 @@
 import React, { useRef, useState } from 'react'
 import { View, Text, StatusBar, TextInput, TouchableOpacity, Alert, Animated, ToastAndroid } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
+import { useDispatch, useSelector } from 'react-redux'
+import { userLogin } from '../../redux/actions/AuthAction'
+import { LOGIN_SUCCESS } from '../../redux/Types'
 
-import * as styles from './styles'
-import { color, IcBackArrow, IcCheck, IcClose, IcEmail, IcEyeClose, IcEyeOpen, IcLock, size } from '../../theme'
+import { color, IcBackArrow, IcEyeClose, IcEyeOpen, IcLock, IcPerson, size } from '../../theme'
 import { Button, Header } from '../../components'
-import { useDispatch } from 'react-redux'
-import { login } from '../../redux/actions/AuthAction'
+import * as styles from './styles'
 
 export const LoginScreen = () => {
 
   const navigation = useNavigation();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const loading = useSelector((state) => state.auth.loading);
   const [inputFields, setInputFields] = useState({
-    email: '',
+    username: '',
     password: ''
   });
-  const [isEmailValid, setIsEmailValid] = useState(false);
+  const [isUsernameValid, setIsUsernameValid] = useState(false);
   const [isPasswordValid, setIsPasswordValid] = useState(false);
   const [togglePasswordVisibility, setTogglePasswordVisibility] = useState(true);
   const [errors, setErrors] = useState({});
@@ -41,18 +43,13 @@ export const LoginScreen = () => {
   const validateForm = () => {
 
     let newErrors = {};
-    const emailRegex = /^[A-Za-z0-9\._%+\-]+@[A-Za-z0-9\.\-]+\.[A-Za-z]{2,}$/;
 
-    if(!inputFields.email){
-      newErrors.email = 'Email is required'
-      setIsEmailValid(false)
-    }
-    else if (!emailRegex.test(inputFields?.email)){
-      newErrors.email = 'Invalid email. Your email should be example@gmail.com'
-      setIsEmailValid(false)
+    if(!inputFields.username){
+      newErrors.username = 'Username is required'
+      setIsUsernameValid(false)
     }
     else {
-      setIsEmailValid(true)
+      setIsUsernameValid(true)
     }
 
     if(!inputFields.password){
@@ -74,22 +71,29 @@ export const LoginScreen = () => {
     return Object.keys(newErrors).length === 0
   } 
 
+
   const handleLogin = async () => {
-    const userEmail = inputFields?.email;
-    const userPassword = inputFields?.password;
-    const user = { userEmail, userPassword};
-    
+    const user = {
+      username: inputFields?.username,
+      password: inputFields?.password
+    }
     try {
-      if(validateForm()){
-        dispatch(login(user))
+      if(!validateForm()){
+        return;
+      }
+      const result = await dispatch(userLogin(user));
+      console.log(result)
+      if(result.type === LOGIN_SUCCESS){
+        Alert.alert(
+          'Login Success',
+          'You have successfully logged in',
+          [{text: 'OK', onPress: () => navigation.navigate('todoScreen')}]
+        )
       }
     }
     catch (error) {
       console.log(error)
-      ToastAndroid.show(
-        'Error: ' + error.message,
-        ToastAndroid.SHORT
-      )
+      // ToastAndroid.show('An error occurred', ToastAndroid.SHORT);
     }
   }
 
@@ -112,18 +116,18 @@ export const LoginScreen = () => {
           <Text style={styles.title()}>Login</Text>
           <View style={styles.inputBoxWrapper()}>
             <Animated.View style={[styles.inputBox(), { transform: [{ translateX: shakeAnim }] }]}>
-              <IcEmail width={size.moderateScale(20)} height={size.moderateScale(20)} />
+              <IcPerson width={size.moderateScale(20)} height={size.moderateScale(20)} />
               <TextInput
                 style={styles.inputStyle()}
-                placeholder='Email'
+                placeholder='Username'
                 placeholderTextColor={color.creamLight}
-                value={inputFields?.email}
-                onChangeText={(val) => handleChange(val, 'email')}
+                value={inputFields?.username}
+                onChangeText={(val) => handleChange(val, 'username')}
                 autoCapitalize='none'
-                keyboardType='email-address'
+                keyboardType='default'
               />
               {
-                errors.email && (<Text style={styles.errorText()}>{errors.email}</Text>)
+                errors.username && (<Text style={styles.errorText()}>{errors.username}</Text>)
               }
             </Animated.View>
             <Animated.View style={[styles.inputBox(), { transform: [{ translateX: shakeAnim }] }]}>
@@ -149,14 +153,15 @@ export const LoginScreen = () => {
                 errors.password && (<Text style={styles.errorText()}>{errors.password}</Text>)
               }
             </Animated.View>
-            <TouchableOpacity style={styles.linkWrapper()} onPress={() => navigation.navigate('todoScreen', {user: inputFields} )}>
+            <TouchableOpacity style={styles.linkWrapper()} onPress={() => navigation.navigate('registerScreen')}>
               <Text style={styles.linkText()}>Already have an account?</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.buttonWrapper()}>
             <Button 
               title='LOGIN'
-              btnStyle={styles.button()}
+              btnStyle={styles.button(loading)}
+              disabled={loading}
               onPress={handleLogin}
             />
           </View>

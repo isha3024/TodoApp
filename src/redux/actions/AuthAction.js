@@ -1,56 +1,41 @@
-import AsyncStorage from "@react-native-async-storage/async-storage"
-import { LOGIN_SUCCESS, LOGOUT, REGISTER } from "../Types";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { LOGIN_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS } from "../Types";
+
+import axios from "axios";
+import { Alert, ToastAndroid } from "react-native";
 
 
-export const loginSuccess = (user) => {
-	return {
-		type: LOGIN_SUCCESS,
-		payload: user
-	}
-}
 
-export const registerSuccess = (user) => {
-	console.log('user in registerSuccess function: ', user)
-	return {
-		type: REGISTER,
-		payload: user
-	}
-}
-
-export const logout = () => ({
-	type: LOGOUT,
-});
-
-
-//async action creaters
-export const login = (user) => async (dispatch) => {
+//user login post request
+export const userLogin = (user) => async (dispatch) => {
+	dispatch({ type: LOGIN_REQUEST });
 	try {
-		await AsyncStorage.setItem('user', JSON.stringify(user))
-		dispatch(loginSuccess(user))
-	}
-	catch(error) {
-		console.log(error)
-	}
-}
-
-export const loadUser = () => async (dispatch) => {
-	try {
-		const user = await AsyncStorage.getItem('user');
-		if(user) {
-			dispatch(loginSuccess(JSON.parse(user)))
+		const response = await axios({
+			url: 'https://dummyjson.com/user/login',
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			data: user
+		})
+		if (response.status === 200) {
+			const user = response.data;
+			// Save token to AsyncStorage
+			await AsyncStorage.setItem('user', JSON.stringify(user));
+			dispatch({ type: LOGIN_SUCCESS, payload: user });
+			Alert.alert(
+				"Login Success",
+				"Welcome " + user.username + "!",
+				[{text: 'OK', onPress: () => null}]
+			)
 		}
-	}
-	catch (error) {
-		console.log(error)
-	}
-}
-
-export const register = (user) => async (dispatch) => {
-	try {
-		await AsyncStorage.setItem('user', JSON.stringify(user));
-		dispatch(registerSuccess(user))
+		return {type: LOGIN_SUCCESS, payload: response.data}
 	}
 	catch(error) {
-		console.log(error)
+		// console.error('Error details:', error.response.data.message);
+		ToastAndroid.show(error.response.data.message, ToastAndroid.SHORT)
+		dispatch({ type: LOGIN_FAILURE, payload: error });
+
+		return {type: LOGIN_FAILURE, payload: error}
 	}
 }

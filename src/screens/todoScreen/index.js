@@ -3,7 +3,7 @@ import { View, Text, StatusBar, TextInput, TouchableOpacity, Keyboard, ScrollVie
 import { useDispatch, useSelector } from 'react-redux'
 
 import { color, IcCheck, IcClose, IcTrash } from '../../theme'
-import { addTodo, markTodoComplete, removeTodo, toggleTodo } from '../../redux'
+import { addTodo, markTodoComplete, removeTodo } from '../../redux'
 import * as styles from './styles'
 
 export const TodoScreen = () => {

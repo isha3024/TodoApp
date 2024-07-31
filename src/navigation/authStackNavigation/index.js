@@ -9,16 +9,12 @@ const AuthStack = createStackNavigator();
 
 export const AuthStackNavigation = () => {
 
-
-  const isLoggedIn = useSelector(state => state.auth.isLoggedIn);
-  console.log('isLoggedIn in registerScreen: ', isLoggedIn)
-
-  const isRegistered = useSelector(state => state.auth.isRegistered);
-  console.log('isRegistered:: ', isRegistered)
+  // const isRegistered = useSelector(state => state.auth.isRegistered);
+  // console.log('isRegistered:: ', isRegistered)
 
   return (
     <AuthStack.Navigator>
-      {
+      {/* {
         isRegistered
           ? (
             <AuthStack.Screen
@@ -28,7 +24,6 @@ export const AuthStackNavigation = () => {
                 headerShown: false
               }}
             />
-
           )
           : (
             <AuthStack.Screen
@@ -39,7 +34,21 @@ export const AuthStackNavigation = () => {
               }}
             />
           )
-      }
+      } */}
+      <AuthStack.Screen
+        name='loginScreen'
+        component={LoginScreen}
+        options={{
+          headerShown: false
+        }}
+      />
+      <AuthStack.Screen
+        name='registerScreen'
+        component={RegisterScreen}
+        options={{
+          headerShown: false
+        }}
+      />
     </AuthStack.Navigator>
   )
 }
