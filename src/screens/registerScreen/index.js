@@ -1,28 +1,33 @@
 import React, { useRef, useState } from 'react'
-import { View, Text, StatusBar, TouchableOpacity, TextInput, Animated } from 'react-native'
+import { View, Text, StatusBar, TouchableOpacity, TextInput, Animated, Platform, Alert } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useNavigation } from '@react-navigation/native'
 
 import { Button, Header } from '../../components'
-import { color, IcBackArrow, IcEmail, IcEyeClose, IcEyeOpen, IcLock, IcPerson, size } from '../../theme'
+import { color, IcBackArrow, IcEmail, IcEyeClose, IcEyeOpen, IcLock, IcPerson, IcUserAdd, size } from '../../theme'
 import * as styles from './styles'
-import { useDispatch } from 'react-redux'
-import { register } from '../../redux/actions/AuthAction'
+import { useDispatch, useSelector } from 'react-redux'
+import { userRegister } from '../../redux/actions/AuthAction'
+import { ScrollView } from 'react-native-gesture-handler'
+import { REGISTER_SUCCESS } from '../../redux/Types'
 
 export const RegisterScreen = () => {
 
 
   const navigation = useNavigation()
   const dispatch = useDispatch()
+  const loading = useSelector((state) => state.auth.loading);
   const [togglePasswordVisibility, setTogglePasswordVisibility] = useState(true);
   const [togglePasswordVisibilityTwo, setTogglePasswordVisibilityTwo] = useState(true);
   const [errors, setErrors] = useState({});
   const [isEmailValid, setIsEmailValid] = useState(false);
-  const [isNameValid, setIsNameValid] = useState(false);
+  const [isUserNameValid, setIsUserNameValid] = useState(false);
+  const [isFirstNameValid, setIsFirstNameValid] = useState(false);
   const [isPasswordValid, setIsPasswordValid] = useState(false);
   const [isConfirmPasswordValid, setIsConfirmPasswordValid] = useState(false);
   const [inputFields, setInputFields] = useState({
     name: '',
+    username: '',
     email: '',
     password: '',
     confirmPassword: ''
@@ -50,18 +55,40 @@ export const RegisterScreen = () => {
   const validateForm = () => {
     let newErrors = {};
     const emailRegex = /^[A-Za-z0-9\._%+\-]+@[A-Za-z0-9\.\-]+\.[A-Za-z]{2,}$/;
-    const nameRegex = /^[a-zA-z]/gm
+    const nameRegex = /^[a-zA-z]/gm;
+    const usernameRegex = /^[a-z]{2,6}$/
+
     if (!inputFields?.name) {
       newErrors.name = 'Name is required';
-      setIsNameValid(false)
+      setIsFirstNameValid(false)
     }
     else if (inputFields?.name.length < 2) {
       newErrors.name = 'Name must be at least 2 characters long';
-      setIsNameValid(false)
+      setIsFirstNameValid(false)
     }
     else if (!nameRegex.test(inputFields?.name)) {
       newErrors.name = 'Name should not contain special characters and should not start with any digit'
-      setIsNameValid(false)
+      setIsFirstNameValid(false)
+    }
+
+    if(!inputFields?.username){
+      newErrors.username = 'Username is required',
+      setIsUserNameValid(false)
+    }
+    else if(inputFields?.username.length <= 2){
+      newErrors.username = 'Username must be at least 3 characters long',
+      setIsUserNameValid(false)
+    }
+    else if(inputFields.username.length > 6) {
+      newErrors.username = 'Username must be not more than 6 characters long',
+      setIsUserNameValid(false)
+    }
+    else if(!usernameRegex.test(inputFields.username)){
+      newErrors.username = 'Username should only contain lowercase letters',
+      setIsUserNameValid(false)
+    }
+    else {
+      setIsUserNameValid(true)
     }
 
     if (!inputFields?.email) {
@@ -98,27 +125,40 @@ export const RegisterScreen = () => {
     }
 
     setErrors(newErrors);
-    if (Object.keys(newErrors).length !== 0) {
+    if(Object.keys(newErrors).length !== 0) {
       shake()
     }
     return Object.keys(newErrors).length === 0
   }
 
   const handleRegister = async () => {
-    const userName = inputFields?.name;
+    const name = inputFields?.name;
+    const userName = inputFields?.username
     const userEmail = inputFields?.email;
     const userPassword = inputFields?.password;
     const userConfirmPassword = inputFields?.confirmPassword;
-    const user = { userName, userEmail, userPassword, userConfirmPassword};
-    console.log('userdata in register Screen:: ', user)
-
+    const user = { name, userName, userEmail, userPassword, userConfirmPassword};
+    
     try {
-      if(validateForm()) {
-        dispatch(register(user))
+      if(!validateForm()){
+        return
+      }
+      const result = await dispatch(userRegister(user));
+      if(result.type === REGISTER_SUCCESS){
+        Alert.alert(
+          'Registration Success',
+          'You have successfully registered',
+          [{text: 'OK', onPress: () => navigation.navigate('loginScreen')}]
+        )
       }
     }
     catch (error) {
-      console.error(error)
+      Alert.alert(
+        'Error',
+        'Error while registring',
+        [{text: 'OK', onPress: () => navigation.navigate('todoScreen')}]
+      )
+      console.log(error)
     }
   }
 
@@ -126,8 +166,10 @@ export const RegisterScreen = () => {
     <KeyboardAwareScrollView
       keyboardShouldPersistTaps='handled'
       contentContainerStyle={styles.keyboardAwareStyle()}
+      behavior="padding"
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 50 : 70}
     >
-      <View style={styles.mainView()}>
+      <ScrollView showsVerticalScrollIndicator={false} style={styles.mainView()}>
         <View style={styles.topView()}>
           <StatusBar backgroundColor={color.primary} translucent={true} />
           <Header
@@ -155,6 +197,20 @@ export const RegisterScreen = () => {
                 />
                 {
                   errors.name && (<Text style={styles.errorText()}>{errors.name}</Text>)
+                }
+              </Animated.View>
+              <Animated.View style={[styles.inputBox(), { transform: [{ translateX: shakeAnim }] }]}>
+                <IcUserAdd width={size.moderateScale(20)} height={size.moderateScale(20)} />
+                <TextInput
+                  style={styles.inputStyle()}
+                  placeholder='Username'
+                  placeholderTextColor={color.creamLight}
+                  autoCapitalize='none'
+                  value={inputFields?.username}
+                  onChangeText={(text) => handledTextChange('username', text)}
+                />
+                {
+                  errors.username && (<Text style={styles.errorText()}>{errors.username}</Text>)
                 }
               </Animated.View>
               <Animated.View style={[styles.inputBox(), { transform: [{ translateX: shakeAnim }] }]}>
@@ -215,19 +271,20 @@ export const RegisterScreen = () => {
                 }
               </Animated.View>
               <TouchableOpacity style={styles.linkWrapper()} onPress={() => navigation.navigate('loginScreen')}>
-                <Text style={styles.linkText()}>Don't have an account?</Text>
+                <Text style={styles.linkText()}>Already have an account?</Text>
               </TouchableOpacity>
             </View>
             <View style={styles.buttonWrapper()}>
               <Button
                 title='REGISTER'
-                btnStyle={styles.button()}
+                btnStyle={styles.button(loading)}
+              disabled={loading}
                 onPress={handleRegister}
               />
             </View>
           </View>
         </View>
-      </View>
+      </ScrollView>
     </KeyboardAwareScrollView>
   )
 }

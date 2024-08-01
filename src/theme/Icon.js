@@ -10,6 +10,7 @@ import { Person } from './svgIcons/IcPerson';
 import { Quotes } from './svgIcons/IcQuotes';
 import { Todo } from './svgIcons/IcTodo';
 import { Trash } from './svgIcons/IcTrash';
+import { UserAdd } from './svgIcons/IcUserAdd';
 
 
 export const IcClose = props => <Close {...props} />;
@@ -24,3 +25,4 @@ export const IcPerson = props => <Person {...props} />;
 export const IcAvatar = props => <Avatar {...props} />;
 export const IcQuotes = props => <Quotes {...props} />;
 export const IcTodo = props => <Todo {...props} />;
+export const IcUserAdd = props => <UserAdd {...props} />;

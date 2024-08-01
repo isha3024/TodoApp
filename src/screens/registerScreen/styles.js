@@ -76,10 +76,10 @@ export const buttonWrapper = () => ({
   marginTop: size.moderateScale(20)
 })
 
-export const button = () => ({
-  backgroundColor: color.darkGrey,
+export const button = (loading) => ({
+  backgroundColor: loading ? color.disabled : color.darkGrey,
   width: '100%',
-  height: size.moderateScale(50)
+  borderRadius: size.moderateScale(5)
 })
 
 export const linkWrapper = () => ({

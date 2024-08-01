@@ -82,7 +82,6 @@ export const LoginScreen = () => {
         return;
       }
       const result = await dispatch(userLogin(user));
-      console.log(result)
       if(result.type === LOGIN_SUCCESS){
         Alert.alert(
           'Login Success',
@@ -109,6 +108,7 @@ export const LoginScreen = () => {
               <IcBackArrow />
             )
           }}
+          leftIconPress={() => navigation.goBack()}
         />
       </View>
       <View style={styles.middleView()}>
@@ -154,7 +154,7 @@ export const LoginScreen = () => {
               }
             </Animated.View>
             <TouchableOpacity style={styles.linkWrapper()} onPress={() => navigation.navigate('registerScreen')}>
-              <Text style={styles.linkText()}>Already have an account?</Text>
+              <Text style={styles.linkText()}>Don't have an account?</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.buttonWrapper()}>

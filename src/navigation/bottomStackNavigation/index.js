@@ -1,5 +1,4 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
 import { createBottomTabNavigator, useBottomTabBarHeight } from '@react-navigation/bottom-tabs'
 import { QuotesScreen, TodoScreen } from '../../screens'
 import { color, fonts, fontSize, IcQuotes, IcTodo, size } from '../../theme'

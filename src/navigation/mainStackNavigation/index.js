@@ -8,6 +8,7 @@ import { SpalshScreen } from '../../screens/splashScreen';
 import { AuthStackNavigation } from '../authStackNavigation';
 import { TodoScreen } from '../../screens';
 import { BottomStackNavigation } from '../bottomStackNavigation';
+import { color } from '../../theme';
 
 const Stack = createStackNavigator();
 
@@ -21,9 +22,7 @@ export const MainStackNavigation = () => {
     }, 2000)
   }, [])
 
-  const userLoggedIn = useSelector((state) => state.auth.userLoggedIn);;
-  console.log('userLoggedIn:: ', userLoggedIn)
-
+  const userLoggedIn = useSelector((state) => state.auth.userLoggedIn);
 
   return (
     <NavigationContainer>
@@ -39,40 +38,25 @@ export const MainStackNavigation = () => {
             />
           )
         }
-        {
-          userLoggedIn
-            ? (
-              <Stack.Screen
-                name='bottomStackNavigation'
-                component={BottomStackNavigation}
-                options={{
-                  headerShown: false
-                }}
-              />
-            ) : (
-              <Stack.Screen
-                name='authStackNavigation'
-                component={AuthStackNavigation}
-                options={{
-                  headerShown: false
-                }}
-              />
-            )
+        {!userLoggedIn
+          ? (
+            <Stack.Screen
+              name='authStackNavigation'
+              component={AuthStackNavigation}
+              options={{
+                headerShown: false
+              }}
+            />
+          ) : (
+            <Stack.Screen
+              name='bottomStackNavigation'
+              component={BottomStackNavigation}
+              options={{
+                headerShown: false
+              }}
+            />
+          )
         }
-        {/* <Stack.Screen
-          name='authStackNavigation'
-          component={AuthStackNavigation}
-          options={{
-            headerShown: false
-          }}
-        />
-        <Stack.Screen
-          name='todoScreen'
-          component={TodoScreen}
-          options={{
-            headerShown: false
-          }}
-        /> */}
       </Stack.Navigator>
     </NavigationContainer>
   )
