@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import { SpalshScreen } from '../../screens/splashScreen';
 import { AuthStackNavigation } from '../authStackNavigation';
 import { TodoScreen } from '../../screens';
+import { BottomStackNavigation } from '../bottomStackNavigation';
 
 const Stack = createStackNavigator();
 
@@ -42,8 +43,8 @@ export const MainStackNavigation = () => {
           userLoggedIn
             ? (
               <Stack.Screen
-                name='todoScreen'
-                component={TodoScreen}
+                name='bottomStackNavigation'
+                component={BottomStackNavigation}
                 options={{
                   headerShown: false
                 }}

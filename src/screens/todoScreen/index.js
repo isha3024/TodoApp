@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text, StatusBar, TextInput, TouchableOpacity, Keyboard, ScrollView, Alert, ToastAndroid } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { color, IcAvatar, IcCheck, IcClose, IcTrash } from '../../theme'
 import { addTodo, markTodoComplete, removeTodo } from '../../redux'
 import * as styles from './styles'
-import { logoutUser } from '../../redux/actions/AuthAction'
+import { fetchQuotes, logoutUser } from '../../redux/actions/AuthAction'
 
 export const TodoScreen = () => {
 
@@ -58,6 +58,12 @@ export const TodoScreen = () => {
       ]
     )
   }
+
+  const handleQuotes = () => {
+    dispatch(fetchQuotes())
+  }
+
+  handleQuotes()
 
   return (
     <View style={styles.mainView()}>

@@ -7,6 +7,8 @@ import { EyeClose } from './svgIcons/IcEyeClose';
 import { EyeOpen } from './svgIcons/IcEyeOpen';
 import { Lock } from './svgIcons/IcLock';
 import { Person } from './svgIcons/IcPerson';
+import { Quotes } from './svgIcons/IcQuotes';
+import { Todo } from './svgIcons/IcTodo';
 import { Trash } from './svgIcons/IcTrash';
 
 
@@ -20,3 +22,5 @@ export const IcEyeClose = props => <EyeClose {...props} />;
 export const IcLock = props => <Lock {...props} />;
 export const IcPerson = props => <Person {...props} />;
 export const IcAvatar = props => <Avatar {...props} />;
+export const IcQuotes = props => <Quotes {...props} />;
+export const IcTodo = props => <Todo {...props} />;
