@@ -8,6 +8,8 @@ export const color = {
   red: '#781F19',
   white: '#ffffff',
   disabled: '#D6BD9831',
+  textDark: '#021526',
+  textCompleted: '#173B45',
   transparent: 'rgba(0,0,0,0)',
   semiTransBlack: 'rgba(0, 0, 0, 0.5)',
   customTransparent: opacity => `rgba(0, 0, 0,${opacity ?? 1})`,

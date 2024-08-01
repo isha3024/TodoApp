@@ -15,8 +15,8 @@ class MainActivity : ReactActivity() {
   override fun getMainComponentName(): String = "practiceReact"
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(null)
-  }
+      super.onCreate(null);
+    }
 
   /**
    * Returns the instance of the [ReactActivityDelegate]. We use [DefaultReactActivityDelegate]

@@ -1,7 +1,7 @@
-import { thunk } from "redux-thunk";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { persistReducer, persistStore } from "redux-persist";
+import  { thunk }  from "redux-thunk";
 
 import { todoReducer } from "./Reducer";
 import { authReducer } from "./AuthReducer";

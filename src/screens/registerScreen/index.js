@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { View, Text, StatusBar, TouchableOpacity, TextInput, Animated, Platform, Alert } from 'react-native'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { useNavigation } from '@react-navigation/native'
@@ -7,7 +7,7 @@ import { Button, Header } from '../../components'
 import { color, IcBackArrow, IcEmail, IcEyeClose, IcEyeOpen, IcLock, IcPerson, IcUserAdd, size } from '../../theme'
 import * as styles from './styles'
 import { useDispatch, useSelector } from 'react-redux'
-import { userRegister } from '../../redux/actions/AuthAction'
+import { resetLoading, userRegister } from '../../redux/actions/AuthAction'
 import { ScrollView } from 'react-native-gesture-handler'
 import { REGISTER_SUCCESS } from '../../redux/Types'
 
@@ -161,6 +161,11 @@ export const RegisterScreen = () => {
       console.log(error)
     }
   }
+
+  useEffect(() => {
+    dispatch(resetLoading())
+  }, [])
+  
 
   return (
     <KeyboardAwareScrollView

@@ -2,7 +2,12 @@ import { color, fonts, fontSize, size } from "../../theme";
 
 export const mainView = () => ({
   flex: 1,
-  backgroundColor: color.primary,
+  // backgroundColor: color.primary,
+})
+
+export const ImageBackground = () => ({
+  flex: 1,
+  zIndex: 10
 })
 
 export const topView = (statusbarHeight) => ({
@@ -19,15 +24,14 @@ export const userProfileView = () => ({
 })
 
 export const userNameText = () => ({
-  color: color.cream,
-  fontSize: fontSize.small,
+  color: color.textDark,
+  fontSize: fontSize.smallMedium,
   fontFamily: fonts.poppinsMedium,
   letterSpacing: size.moderateScale(2),
 })
 
 export const title = () => ({
-  textAlign: 'left',
-  color: color.cream,
+  color: color.textDark,
   fontSize: fontSize.middleLarge,
   fontFamily: fonts.poppinsBold,
   letterSpacing: size.moderateScale(2),
@@ -66,7 +70,7 @@ export const todoWrapper = () => ({
 })
 
 export const todoListTitle = () => ({
-  color: color.cream,
+  color: color.textDark,
   fontSize: fontSize.small,
   fontFamily: fonts.poppinsLight,
   letterSpacing: size.moderateScale(2),
@@ -89,7 +93,7 @@ export const todoItemView = () => ({
 
 export const todoItemText = (isCompleted) => ({
   flex: 1,
-  color: isCompleted ? color.creamLight : color.cream,
+  color: isCompleted ? color.textCompleted : color.textDark,
   fontSize: fontSize.small,
   fontFamily: fonts.poppinsMedium,
   letterSpacing: size.moderateScale(2),

@@ -8,13 +8,17 @@ import {
 	LOGOUT, 
 	REGISTER_FAILURE, 
 	REGISTER_REQUEST, 
-	REGISTER_SUCCESS 
+	REGISTER_SUCCESS, 
+	RESET_LOADING
 } from "../Types";
 import axios from "axios";
 import { ToastAndroid } from "react-native";
 
-
-
+export const resetLoading = () => {
+	return {
+		type: RESET_LOADING
+	}
+}
 
 //user login post request
 export const userLogin = (user) => async (dispatch) => {
@@ -83,21 +87,28 @@ export const fetchQuotes = () => async (dispatch) => {
 	})
 	try {
 		const response = await axios({
-			url: 'https://type.fit/api/quotes',
+			url: 'https://dummyjson.com/quotes/random',
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
-			}
+			},
 		})
+		console.log('responseeee: ', response.data.quote)
 		if (response.status === 200) {
-			const quotes = response.data;
-			console.log('quotes response in getQuotes: ', quotes)
-			await AsyncStorage.setItem('quotes', JSON.stringify(quotes));
-			dispatch({ type: FETCH_QUOTES_SUCCESS, payload: quotes });
+			const quote = response.data.quote;
+			console.log('quotes response: ', quote)
+			// await AsyncStorage.setItem('quote', JSON.stringify(quote.quote));
+			dispatch({ type: FETCH_QUOTES_SUCCESS, payload: quote });
 		}
 	}
 	catch (error) {
-		// console.error('Error details:', error.response.data.message);
-		ToastAndroid.show(error.response.data.message, ToastAndroid.SHORT)
+		console.error('Error details:', error);
+		// ToastAndroid.show(error.response.data.message, ToastAndroid.SHORT)
+
+		if (error.response) {
+      console.error('Error response:', error.response.data.message);
+    } else {
+      console.error('Network error or other issue:', error.message);
+    }
 	}
 }

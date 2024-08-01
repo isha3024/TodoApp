@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { createStackNavigator } from '@react-navigation/stack';
+import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
 
@@ -26,15 +26,17 @@ export const MainStackNavigation = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+          cardStyleInterpolator: CardStyleInterpolators.forBottomSheetAndroid
+        }}      
+      >
         {
           showSplashScreen && (
             <Stack.Screen
               name='splashScreen'
               component={SpalshScreen}
-              options={{
-                headerShown: false
-              }}
             />
           )
         }
@@ -43,17 +45,11 @@ export const MainStackNavigation = () => {
             <Stack.Screen
               name='authStackNavigation'
               component={AuthStackNavigation}
-              options={{
-                headerShown: false
-              }}
             />
           ) : (
             <Stack.Screen
               name='bottomStackNavigation'
               component={BottomStackNavigation}
-              options={{
-                headerShown: false
-              }}
             />
           )
         }

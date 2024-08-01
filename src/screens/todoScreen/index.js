@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, StatusBar, TextInput, TouchableOpacity, Keyboard, ScrollView, Alert, ToastAndroid } from 'react-native'
+import { View, Text, StatusBar, TextInput, TouchableOpacity, Keyboard, ScrollView, Alert, ToastAndroid, ImageBackground } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { color, IcAvatar, IcCheck, IcClose, IcTrash } from '../../theme'
+import { color, IcAvatar, IcCheck, IcClose, IcTrash, size } from '../../theme'
 import { addTodo, markTodoComplete, removeTodo } from '../../redux'
 import * as styles from './styles'
-import { fetchQuotes, logoutUser } from '../../redux/actions/AuthAction'
+import { logoutUser } from '../../redux/actions/AuthAction'
+import { Images } from '../../theme/Images'
 
 export const TodoScreen = () => {
 
@@ -59,16 +60,17 @@ export const TodoScreen = () => {
     )
   }
 
-  const handleQuotes = () => {
-    dispatch(fetchQuotes())
-  }
-
-  handleQuotes()
-
   return (
     <View style={styles.mainView()}>
       <StatusBar backgroundColor={color.primary} translucent={false} />
-      <View style={styles.topView(statusbarHeight)}>
+      <ImageBackground
+        source={Images.imgBg}
+        width={size.deviceWidth}
+        height={size.deviceHeight}
+        style={styles.ImageBackground()}
+        blurRadius={10}
+      >
+<View style={styles.topView(statusbarHeight)}>
         <View style={styles.userProfileView()}>
           <Text style={styles.userNameText()}>Hello, {userData.firstName}</Text>
           <TouchableOpacity onPress={handleLogout}>
@@ -122,6 +124,8 @@ export const TodoScreen = () => {
           </ScrollView>
         </View>
       </View>
+      </ImageBackground>
+      
     </View>
   )
 }

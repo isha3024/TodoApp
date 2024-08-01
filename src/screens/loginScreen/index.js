@@ -1,8 +1,8 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { View, Text, StatusBar, TextInput, TouchableOpacity, Alert, Animated, ToastAndroid } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { useDispatch, useSelector } from 'react-redux'
-import { userLogin } from '../../redux/actions/AuthAction'
+import { resetLoading, userLogin } from '../../redux/actions/AuthAction'
 import { LOGIN_SUCCESS } from '../../redux/Types'
 
 import { color, IcBackArrow, IcEyeClose, IcEyeOpen, IcLock, IcPerson, size } from '../../theme'
@@ -71,7 +71,6 @@ export const LoginScreen = () => {
     return Object.keys(newErrors).length === 0
   } 
 
-
   const handleLogin = async () => {
     const user = {
       username: inputFields?.username,
@@ -95,6 +94,11 @@ export const LoginScreen = () => {
       // ToastAndroid.show('An error occurred', ToastAndroid.SHORT);
     }
   }
+
+  useEffect(() => {
+    dispatch(resetLoading())
+  }, [])
+  
 
   return (
     <View style={styles.mainView()}>
